@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Accommodation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AccommodationController extends Controller
 {
@@ -29,16 +30,16 @@ class AccommodationController extends Controller
      */
     public function store(Request $request)
     {
-        // $validator = Validator::make($request->all(), [
-        //     'title' => 'required|string|max:255',
-        //     'slug' => 'required|string|max:100',
-        //     'excerpt' => 'required',
-        //     'body' => 'required',
-        //     'category_id' => 'required'
-        // ]);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'type' => 'required',
+            'capacity' => 'required|numeric|min:1',
+            'price_per_person' => 'required|numeric|min:0'
+        ]);
 
-        // if ($validator->fails())
-        //     return response()->json($validator->errors());
+        if ($validator->fails())
+            return response()->json($validator->errors());
 
         $accommodation = Accommodation::create([
             'name' => $request->name,

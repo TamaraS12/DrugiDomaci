@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BookingController extends Controller
 {
@@ -29,6 +30,16 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'number_of_persons' => 'required|numeric|min:1',
+            'date_from' => 'required|date|after:tomorrow',
+            'date_to' => 'required|date|after:date_from',
+            'price' => 'required|numeric|min:0'
+        ]);
+
+        if ($validator->fails())
+            return response()->json($validator->errors());
+
         $booking = Booking::create([
             'number_of_persons' => $request->number_of_persons,
             'date_from' => $request->date_from,
