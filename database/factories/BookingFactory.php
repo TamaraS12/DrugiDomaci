@@ -17,7 +17,12 @@ class BookingFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            
+       
+            'date_from' => $this->faker->date(),
+            'date_to' => $this->faker->date(),
+            'price' => $this->faker->randomFloat(2, 1000, 10000)
+       
         ];
     }
 }
